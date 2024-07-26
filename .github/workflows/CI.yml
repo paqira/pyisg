@@ -28,7 +28,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@nightly
         with:
           components: clippy, rustfmt
-      - run: pip install -U pip ruff
+      - run: pip install -U pip ruff maturin
       - name: Check Python
         run: |
           ruff format --check
@@ -37,13 +37,12 @@ jobs:
         run: |
           cargo fmt --check
           cargo clippy
-      - name: Build
-        uses: PyO3/maturin-action@v1
-        with:
-          command: develop
-          args: --release
       - name: Test
-        run: python3 -m unittest discover -s tests
+        run: |
+          python3 -m venv venv
+          . venv/bin/activate
+          maturin develop --release
+          python3 -m unittest discover -s tests
   linux:
     runs-on: ${{ matrix.platform.runner }}
     strategy:
