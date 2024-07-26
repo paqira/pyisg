@@ -18,6 +18,32 @@ permissions:
   contents: read
 
 jobs:
+  QA:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: clippy, rustfmt
+      - run: pip install -U pip ruff
+      - name: Check Python
+        run: |
+          ruff format --check
+          ruff check
+      - name: Check Rust
+        run: |
+          cargo fmt --check
+          cargo clippy
+      - name: Build
+        uses: PyO3/maturin-action@v1
+        with:
+          command: develop
+          args: --release
+      - name: Test
+        run: python3 -m unittest discover -s tests
   linux:
     runs-on: ${{ matrix.platform.runner }}
     strategy:
