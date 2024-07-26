@@ -17,7 +17,7 @@ s = pyisg.dumps(obj)
 
 ## Licence
 
-MIT
+MIT or Apache-2.0
 
 ## Reference
 
