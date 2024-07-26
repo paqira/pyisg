@@ -12,5 +12,5 @@ name = "pyisg"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = { version = "0.22.2" }
-libisg = { version = "0.2.0" }
+pyo3 = { version = "0.22" }
+libisg = { version = "0.2" }
