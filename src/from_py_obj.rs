@@ -146,35 +146,35 @@ impl<'a> FromPyObject<'a> for HeaderWrapper {
                 let lat_max = obj
                     .get_item("lat_max")?
                     .ok_or(missing_key!("lat_max"))
+                    .extract::<CoordWrapper>()
                     .map_err(|_| {
                         type_error!(
                             "lat_max",
                             "float | { degree: int (i16), minutes: int (u8), second: int (u8) }"
                         )
                     })?
-                    .extract::<CoordWrapper>()?
                     .into();
                 let lon_min = obj
                     .get_item("lon_min")?
                     .ok_or(missing_key!("lon_min"))
+                    .extract::<CoordWrapper>()
                     .map_err(|_| {
                         type_error!(
                             "lon_min",
                             "float | { degree: int (i16), minutes: int (u8), second: int (u8) }"
                         )
                     })?
-                    .extract::<CoordWrapper>()?
                     .into();
                 let lon_max = obj
                     .get_item("lon_max")?
                     .ok_or(missing_key!("lon_max"))
+                    .extract::<CoordWrapper>()
                     .map_err(|_| {
                         type_error!(
                             "lon_max",
                             "float | { degree: int (i16), minutes: int (u8), second: int (u8) }"
                         )
                     })?
-                    .extract::<CoordWrapper>()?
                     .into();
 
                 match data_format {
