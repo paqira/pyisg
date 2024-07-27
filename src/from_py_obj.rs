@@ -319,89 +319,33 @@ impl<'a> FromPyObject<'a> for DataWrapper {
     }
 }
 
-impl<'a> FromPyObject<'a> for ModelTypeWrapper {
-    fn extract_bound(ob: &Bound<'a, PyAny>) -> PyResult<Self> {
-        let r = ob
-            .extract::<String>()?
-            .parse()
-            .map_err(|_| SerError::new_err("unexpected value"))?;
-        Ok(Self(r))
-    }
+macro_rules! impl_from_py_object {
+    ($type:tt) => {
+        impl<'a> FromPyObject<'a> for $type {
+            fn extract_bound(ob: &Bound<'a, PyAny>) -> PyResult<Self> {
+                let r = ob
+                    .extract::<String>()?
+                    .parse()
+                    .map_err(|_| SerError::new_err("unexpected value"))?;
+                Ok(Self(r))
+            }
+        }
+    };
 }
 
-impl<'a> FromPyObject<'a> for DataTypeWrapper {
-    fn extract_bound(ob: &Bound<'a, PyAny>) -> PyResult<Self> {
-        let r = ob
-            .extract::<String>()?
-            .parse()
-            .map_err(|_| SerError::new_err("unexpected value"))?;
-        Ok(Self(r))
-    }
-}
-
-impl<'a> FromPyObject<'a> for DataUnitsWrapper {
-    fn extract_bound(ob: &Bound<'a, PyAny>) -> PyResult<Self> {
-        let r = ob
-            .extract::<String>()?
-            .parse()
-            .map_err(|_| SerError::new_err("unexpected value"))?;
-        Ok(Self(r))
-    }
-}
-
-impl<'a> FromPyObject<'a> for DataFormatWrapper {
-    fn extract_bound(ob: &Bound<'a, PyAny>) -> PyResult<Self> {
-        let r = ob
-            .extract::<String>()?
-            .parse()
-            .map_err(|_| SerError::new_err("unexpected value"))?;
-        Ok(Self(r))
-    }
-}
-
-impl<'a> FromPyObject<'a> for DataOrderingWrapper {
-    fn extract_bound(ob: &Bound<'a, PyAny>) -> PyResult<Self> {
-        let r = ob
-            .extract::<String>()?
-            .parse()
-            .map_err(|_| SerError::new_err("unexpected value"))?;
-        Ok(Self(r))
-    }
-}
-
-impl<'a> FromPyObject<'a> for TideSystemWrapper {
-    fn extract_bound(ob: &Bound<'a, PyAny>) -> PyResult<Self> {
-        let r = ob
-            .extract::<String>()?
-            .parse()
-            .map_err(|_| SerError::new_err("unexpected value"))?;
-        Ok(Self(r))
-    }
-}
-
-impl<'a> FromPyObject<'a> for CoordTypeWrapper {
-    fn extract_bound(ob: &Bound<'a, PyAny>) -> PyResult<Self> {
-        let r = ob
-            .extract::<String>()?
-            .parse()
-            .map_err(|_| SerError::new_err("unexpected value"))?;
-        Ok(Self(r))
-    }
-}
-
-impl<'a> FromPyObject<'a> for CoordUnitsWrapper {
-    fn extract_bound(ob: &Bound<'a, PyAny>) -> PyResult<Self> {
-        let r = ob
-            .extract::<String>()?
-            .parse()
-            .map_err(|_| SerError::new_err("unexpected value"))?;
-        Ok(Self(r))
-    }
-}
+impl_from_py_object!(ModelTypeWrapper);
+impl_from_py_object!(DataTypeWrapper);
+impl_from_py_object!(DataUnitsWrapper);
+impl_from_py_object!(DataFormatWrapper);
+impl_from_py_object!(DataOrderingWrapper);
+impl_from_py_object!(TideSystemWrapper);
+impl_from_py_object!(CoordTypeWrapper);
+impl_from_py_object!(CoordUnitsWrapper);
 
 impl<'a> FromPyObject<'a> for CreationDateWrapper {
     fn extract_bound(ob: &Bound<'a, PyAny>) -> PyResult<Self> {
         let dict = ob.downcast::<PyDict>()?;
+
         let year = dict
             .get_item("year")?
             .ok_or(SerError::new_err("missing `year`"))?
@@ -414,13 +358,14 @@ impl<'a> FromPyObject<'a> for CreationDateWrapper {
             .get_item("day")?
             .ok_or(SerError::new_err("missing `day`"))?
             .extract()?;
+
         Ok(Self(CreationDate { year, month, day }))
     }
 }
 
 impl<'a> FromPyObject<'a> for CoordWrapper {
     fn extract_bound(ob: &Bound<'a, PyAny>) -> PyResult<Self> {
-        if let Ok(v) = ob.extract::<f64>() {
+        if let Ok(v) = ob.extract() {
             Ok(Self(Coord::Dec(v)))
         } else if let Ok(dict) = ob.downcast::<PyDict>() {
             let deg = dict
@@ -435,6 +380,7 @@ impl<'a> FromPyObject<'a> for CoordWrapper {
                 .get_item("second")?
                 .ok_or(SerError::new_err("missing `second`"))?
                 .extract()?;
+
             Ok(Self(Coord::with_dms(deg, min, sec)))
         } else {
             Err(PyTypeError::new_err("unexpected type"))

@@ -11,14 +11,14 @@ impl ToPyObject for HeaderWrapper {
         macro_rules! set_item {
             ($field:ident) => {
                 dict.set_item(stringify!($field), &self.0.$field)
-                    .expect(concat!("fail setting `", stringify!($field), "` to dict"));
+                    .expect(concat!("fail to set `", stringify!($field), "` to dict"));
             };
         }
 
         macro_rules! set_item_as_string {
             ($field:ident) => {
                 dict.set_item(stringify!($field), &self.0.$field.to_string())
-                    .expect(concat!("fail setting `", stringify!($field), "` to dict"));
+                    .expect(concat!("fail to set `", stringify!($field), "` to dict"));
             };
         }
 
@@ -28,21 +28,21 @@ impl ToPyObject for HeaderWrapper {
                     stringify!($field),
                     &self.0.$field.as_ref().map(|v| v.to_string()),
                 )
-                .expect(concat!("fail setting `", stringify!($field), "` to dict"));
+                .expect(concat!("fail to set `", stringify!($field), "` to dict"));
             };
         }
 
         macro_rules! set_item_data_bounds {
             ($field:ident) => {
                 dict.set_item(stringify!($field), CoordWrapper($field))
-                    .expect(concat!("fail setting `", stringify!($field), "` to dict"));
+                    .expect(concat!("fail to set `", stringify!($field), "` to dict"));
             };
         }
 
         macro_rules! set_item_data_bounds_none {
             ($field:ident) => {
                 dict.set_item(stringify!($field), None::<CoordWrapper>)
-                    .expect(concat!("fail setting `", stringify!($field), "` to dict"));
+                    .expect(concat!("fail to set `", stringify!($field), "` to dict"));
             };
         }
 
@@ -126,8 +126,9 @@ impl ToPyObject for HeaderWrapper {
             "creation_date",
             self.0.creation_date.map(CreationDateWrapper),
         )
-        .expect(concat!("fail setting `creation_date` to dict"));
+        .expect("fail to set `creation_date` to dict");
         set_item!(ISG_format);
+
         dict.into_py(py)
     }
 }
@@ -151,11 +152,11 @@ impl ToPyObject for CreationDateWrapper {
         let dict = PyDict::new_bound(py);
 
         dict.set_item("year", self.0.year)
-            .expect("fail setting `year` to dict");
+            .expect("fail to set `year` to dict");
         dict.set_item("month", self.0.month)
-            .expect("fail setting `month` to dict");
+            .expect("fail to set `month` to dict");
         dict.set_item("day", self.0.day)
-            .expect("fail setting `day` to dict");
+            .expect("fail to set `day` to dict");
 
         dict.into_py(py)
     }
@@ -172,11 +173,11 @@ impl ToPyObject for CoordWrapper {
                 let dict = PyDict::new_bound(py);
 
                 dict.set_item("degree", degree)
-                    .expect("fail setting `degree` to dict");
+                    .expect("fail to set `degree` to dict");
                 dict.set_item("minutes", minutes)
-                    .expect("fail setting `minutes` to dict");
+                    .expect("fail to set `minutes` to dict");
                 dict.set_item("second", second)
-                    .expect("fail setting `second` to dict");
+                    .expect("fail to set `second` to dict");
 
                 dict.into_py(py)
             }
