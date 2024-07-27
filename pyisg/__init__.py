@@ -70,6 +70,7 @@ def dumps(obj: ISGFormatType) -> str:
 
     Raises:
         SerializeError: serialization failed
+        pyo3_runtime.PanicException: data has :obj:`None` even when nodata is :obj:`None`
     """
     try:
         return rsimpl.dumps(obj)
@@ -89,6 +90,7 @@ def dump(obj: ISGFormatType, fp: TextIO) -> int:
 
     Raises:
         SerializeError: serialization failed
+        pyo3_runtime.PanicException: data has :obj:`None` even when nodata is :obj:`None`
     """
     return fp.write(dumps(obj))
 
