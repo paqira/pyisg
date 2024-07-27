@@ -21,6 +21,12 @@ with open("file.isg") as fs:
 s = pyisg.dumps(obj)
 ```
 
+One can install `pyisg` from PyPI
+
+```shell
+pip install pyisg
+```
+
 ## Licence
 
 MIT or Apache-2.0

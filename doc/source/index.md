@@ -15,6 +15,12 @@ with open("file.isg") as fs:
 s = pyisg.dumps(obj)
 ```
 
+One can install `pyisg` from PyPI
+
+```shell
+pip install pyisg
+```
+
 [SPEC]: https://www.isgeoid.polimi.it/Geoid/format_specs.html
 
 Licence
