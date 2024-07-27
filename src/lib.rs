@@ -1,6 +1,6 @@
 use libisg::{
-    Coord, CoordType, CoordUnits, CreationDate, Data, DataFormat, DataOrdering, DataType, DataUnit,
-    Header, ModelType, TideSystem, ISG,
+    Coord, CoordType, CoordUnits, CreationDate, Data, DataFormat, DataOrdering, DataType,
+    DataUnits, Header, ModelType, TideSystem, ISG,
 };
 use pyo3::create_exception;
 use pyo3::exceptions::{PyTypeError, PyValueError};
@@ -18,7 +18,7 @@ pub(crate) struct HeaderWrapper(Header);
 pub(crate) struct DataWrapper(Data);
 pub(crate) struct ModelTypeWrapper(ModelType);
 pub(crate) struct DataTypeWrapper(DataType);
-pub(crate) struct DataUnitsWrapper(DataUnit);
+pub(crate) struct DataUnitsWrapper(DataUnits);
 pub(crate) struct DataFormatWrapper(DataFormat);
 pub(crate) struct DataOrderingWrapper(DataOrdering);
 pub(crate) struct TideSystemWrapper(TideSystem);
