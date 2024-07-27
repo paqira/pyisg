@@ -43,7 +43,7 @@ def loads(s: str) -> ISGFormatType:
     """
     try:
         return rsimpl.loads(s)
-    except Exception as e:
+    except rsimpl.DeError as e:
         raise DeserializeError(*e.args) from None
 
 
@@ -74,7 +74,7 @@ def dumps(obj: ISGFormatType) -> str:
     """
     try:
         return rsimpl.dumps(obj)
-    except Exception as e:
+    except rsimpl.SerError as e:
         raise SerializeError(*e.args) from None
 
 

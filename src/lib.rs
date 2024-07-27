@@ -11,6 +11,11 @@ mod from_py_obj;
 mod into;
 mod to_py_obj;
 
+// SerError and DeError are for propagates error message to Python side,
+// Python code captures all them.
+// This start makes code mess (see from_py_obj.rs),
+// but it is conservative on error.
+
 create_exception!(pyisg, SerError, PyValueError);
 create_exception!(pyisg, DeError, PyValueError);
 
@@ -45,7 +50,7 @@ fn dumps(obj: Bound<'_, PyDict>) -> PyResult<String> {
     let comment = obj
         .get_item("comment")?
         .map_or(Ok("".to_string()), |o| o.extract())
-        .map_err(|_| PyTypeError::new_err("unexpected type on `comment`, expected str | None"))?;
+        .map_err(|_| SerError::new_err("unexpected type on `comment`, expected str | None"))?;
 
     let header = obj
         .get_item("header")?
