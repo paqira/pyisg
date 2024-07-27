@@ -9,13 +9,10 @@ from .types import ISGFormatType
 
 try:
     from . import pyisg as rsimpl  # type: ignore
-except ImportError:
-    import warnings
+except ImportError as e:
+    raise NotImplementedError(f"pyisg does not support current platform") from e
 
-    warnings.warn("pyisg: not supported platform", stacklevel=1)
-    raise
-
-__version__: Final = "0.1.1"
+__version__: Final = "0.1.2"
 
 __all__ = [
     "types",
