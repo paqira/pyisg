@@ -2,7 +2,8 @@
 
 ## vX.X.X - XXXX-XX-XX
 
-Fix leaking error on serializing `lat_max`, `lon_min` and `lon_max`
+- Fix leaking error on serializing `lat_max`, `lon_min` and `lon_max`
+- Fix to relax `dump` and `dumps` args type
 
 ## v0.1.2 - 2024-07-27
 

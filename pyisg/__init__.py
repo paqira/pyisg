@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Final, TextIO
+from typing import Final, TextIO, Any
 
 from . import types
 from .types import ISGFormatType
@@ -62,8 +62,8 @@ def load(fp: TextIO) -> ISGFormatType:
     return loads(fp.read())
 
 
-def dumps(obj: ISGFormatType) -> str:
-    """Serialize ISG 2.0 formatted str into :obj:`str`.
+def dumps(obj: Any) -> str:
+    """Serialize :class:`ISGFormatType`-like obj (typically :obj:`dict`) into :obj:`str`.
 
     Args:
         obj: dict of ISG data
@@ -78,8 +78,8 @@ def dumps(obj: ISGFormatType) -> str:
         raise SerializeError(*e.args) from None
 
 
-def dump(obj: ISGFormatType, fp: TextIO) -> int:
-    """Serialize ISG 2.0 formatted str into file-like obj.
+def dump(obj: Any, fp: TextIO) -> int:
+    """Serialize :class:`ISGFormatType` like obj (typically :obj:`dict`) into file-like obj.
 
     Args:
         obj: dict of ISG data

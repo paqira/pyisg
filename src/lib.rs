@@ -3,7 +3,7 @@ use libisg::{
     DataUnits, Header, ModelType, TideSystem, ISG,
 };
 use pyo3::create_exception;
-use pyo3::exceptions::{PyTypeError, PyValueError};
+use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 use pyo3::types::PyDict;
 
@@ -64,21 +64,21 @@ fn loads<'a>(py: Python<'a>, s: &'a str) -> PyResult<Bound<'a, PyDict>> {
 }
 
 #[pyfunction]
-fn dumps(obj: Bound<'_, PyDict>) -> PyResult<String> {
+fn dumps(obj: Bound<'_, PyAny>) -> PyResult<String> {
     let comment = obj
-        .get_item("comment")?
+        .get_item("comment")
         .map_or(Ok("".to_string()), |o| o.extract())
         .map_err(|_| type_error!("comment", "str | None"))?;
 
     let header = obj
-        .get_item("header")?
-        .ok_or(missing_key!("header"))?
+        .get_item("header")
+        .map_err(|_| missing_key!("header"))?
         .extract::<HeaderWrapper>()?
         .into();
 
     let data = obj
-        .get_item("data")?
-        .ok_or(missing_key!("data"))?
+        .get_item("data")
+        .map_err(|_| missing_key!("data"))?
         .extract::<DataWrapper>()?
         .into();
 
