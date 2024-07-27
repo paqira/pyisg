@@ -32,6 +32,24 @@ pub(crate) struct CoordUnitsWrapper(CoordUnits);
 pub(crate) struct CreationDateWrapper(CreationDate);
 pub(crate) struct CoordWrapper(Coord);
 
+macro_rules! type_error {
+    ($name:expr, $expected:expr) => {
+        SerError::new_err(concat!(
+            "unexpected type on `",
+            $name,
+            "`, expected ",
+            $expected
+        ))
+    };
+}
+macro_rules! missing_key {
+    ($key:expr) => {
+        SerError::new_err(concat!("missing `", $key, "`"))
+    };
+}
+pub(crate) use missing_key;
+pub(crate) use type_error;
+
 #[pyfunction]
 fn loads<'a>(py: Python<'a>, s: &'a str) -> PyResult<Bound<'a, PyDict>> {
     let isg = libisg::from_str(s).map_err(|e| DeError::new_err(e.to_string()))?;
@@ -50,17 +68,17 @@ fn dumps(obj: Bound<'_, PyDict>) -> PyResult<String> {
     let comment = obj
         .get_item("comment")?
         .map_or(Ok("".to_string()), |o| o.extract())
-        .map_err(|_| SerError::new_err("unexpected type on `comment`, expected str | None"))?;
+        .map_err(|_| type_error!("comment", "str | None"))?;
 
     let header = obj
         .get_item("header")?
-        .ok_or(SerError::new_err("missing `header`"))?
+        .ok_or(missing_key!("header"))?
         .extract::<HeaderWrapper>()?
         .into();
 
     let data = obj
         .get_item("data")?
-        .ok_or(SerError::new_err("missing `data`"))?
+        .ok_or(missing_key!("data"))?
         .extract::<DataWrapper>()?
         .into();
 
