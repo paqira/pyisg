@@ -5,7 +5,10 @@ build:
   tools:
     python: latest
   commands:
-    - pip install sphinx myst_nb sphinx_book_theme
+    - python3 -m venv venv
+    - . venv/bin/activate
+    - pip install sphinx myst_nb sphinx_book_theme maturin
+    - maturin develop
     - sphinx-build -b html ./doc/source ./doc/build/html
     - mkdir --parents $READTHEDOCS_OUTPUT
     - mv doc/build/html $READTHEDOCS_OUTPUT/html
