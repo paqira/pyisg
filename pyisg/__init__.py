@@ -8,7 +8,7 @@ from . import types
 from .types import ISGFormatType
 
 try:
-    from . import pyisg as rsimpl
+    from . import pyisg as rsimpl  # type: ignore
 except ImportError:
     import warnings
 
