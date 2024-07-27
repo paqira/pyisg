@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Literal, TypeAlias, TypedDict
 
+from typing_extensions import Required  # python >= 3.11
+
 __all__ = [
     "ISGFormatType",
     #
@@ -50,7 +52,7 @@ class DmsCoordType(TypedDict):
     second: int
 
 
-class HeaderType(TypedDict):
+class HeaderType(TypedDict, total=False):
     """Type of Header dict."""
 
     model_name: str | None
@@ -58,14 +60,14 @@ class HeaderType(TypedDict):
     model_type: ModelTypeType | None
     data_type: DataTypeType | None
     data_units: DataUnitsType | None
-    data_format: DataFormatType | None
+    data_format: Required[DataFormatType]
     data_ordering: DataOrderingType | None
     ref_ellipsoid: str | None
     ref_frame: str | None
     height_datum: str | None
     tide_system: TideSystemType | None
-    coord_type: CoordTypeType
-    coord_units: CoordUnitsType
+    coord_type: Required[CoordTypeType]
+    coord_units: Required[CoordUnitsType]
     map_projection: str | None
     EPSG_code: str | None
     lat_min: float | DmsCoordType | None
@@ -80,11 +82,11 @@ class HeaderType(TypedDict):
     delta_lon: float | DmsCoordType | None
     delta_north: float | DmsCoordType | None
     delta_east: float | DmsCoordType | None
-    nrows: int
-    ncols: int
+    nrows: Required[int]
+    ncols: Required[int]
     nodata: float | None
     creation_date: CreationDateType | None
-    ISG_format: str
+    ISG_format: Required[str]
 
 
 SparseData: TypeAlias = list[tuple[float | DmsCoordType, float | DmsCoordType, float]]
