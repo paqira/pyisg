@@ -147,7 +147,7 @@ class TestDeError(unittest.TestCase):
 
         with self.assertRaises(pyisg.SerializeError) as cm:
             pyisg.dumps(obj)
-        self.assertEqual(cm.exception.args, ("missing `header`",))
+        self.assertEqual(cm.exception.args, ("missing key: 'header'",))
 
 
 class MissingKey(unittest.TestCase):
@@ -191,7 +191,7 @@ class MissingKey(unittest.TestCase):
 
         with self.assertRaises(pyisg.SerializeError) as cm:
             pyisg.dumps(obj)
-        self.assertEqual(cm.exception.args, ("missing `data_format`",))
+        self.assertEqual(cm.exception.args, ("missing key: 'data_format'",))
 
     def test_coord_type(self):
         obj = {
@@ -233,7 +233,7 @@ class MissingKey(unittest.TestCase):
 
         with self.assertRaises(pyisg.SerializeError) as cm:
             pyisg.dumps(obj)
-        self.assertEqual(cm.exception.args, ("missing `coord_type`",))
+        self.assertEqual(cm.exception.args, ("missing key: 'coord_type'",))
 
     def test_coord_units(self):
         obj = {
@@ -275,7 +275,7 @@ class MissingKey(unittest.TestCase):
 
         with self.assertRaises(pyisg.SerializeError) as cm:
             pyisg.dumps(obj)
-        self.assertEqual(cm.exception.args, ("missing `coord_units`",))
+        self.assertEqual(cm.exception.args, ("missing key: 'coord_units'",))
 
     def test_nrows(self):
         obj = {
@@ -317,7 +317,7 @@ class MissingKey(unittest.TestCase):
 
         with self.assertRaises(pyisg.SerializeError) as cm:
             pyisg.dumps(obj)
-        self.assertEqual(cm.exception.args, ("missing `nrows`",))
+        self.assertEqual(cm.exception.args, ("missing key: 'nrows'",))
 
     def test_ncols(self):
         obj = {
@@ -359,7 +359,7 @@ class MissingKey(unittest.TestCase):
 
         with self.assertRaises(pyisg.SerializeError) as cm:
             pyisg.dumps(obj)
-        self.assertEqual(cm.exception.args, ("missing `ncols`",))
+        self.assertEqual(cm.exception.args, ("missing key: 'ncols'",))
 
     def test_ISG_format(self):
         obj = {
@@ -401,7 +401,7 @@ class MissingKey(unittest.TestCase):
 
         with self.assertRaises(pyisg.SerializeError) as cm:
             pyisg.dumps(obj)
-        self.assertEqual(cm.exception.args, ("missing `ISG_format`",))
+        self.assertEqual(cm.exception.args, ("missing key: 'ISG_format'",))
 
     def test_others(self):
         obj = {
@@ -427,7 +427,7 @@ class MissingKey(unittest.TestCase):
         }
 
         actual = pyisg.dumps(obj)
-        expected ="""begin_of_head ================================================
+        expected = """begin_of_head ================================================
 model name     : ---
 model year     : ---
 model type     : ---

@@ -44,7 +44,7 @@ macro_rules! type_error {
 }
 macro_rules! missing_key {
     ($key:expr) => {
-        SerError::new_err(concat!("missing `", $key, "`"))
+        SerError::new_err(concat!("missing key: '", $key, "'"))
     };
 }
 pub(crate) use missing_key;
