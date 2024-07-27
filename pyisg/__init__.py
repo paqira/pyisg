@@ -15,7 +15,7 @@ except ImportError:
     warnings.warn("pyisg: not supported platform", stacklevel=1)
     raise
 
-__version__: Final = "0.1.0"
+__version__: Final = "0.1.1"
 
 __all__ = [
     "types",
