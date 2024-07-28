@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Final, TextIO, Any
+from typing import Any, Final, TextIO
 
 from . import types
 from .types import ISGFormatType
