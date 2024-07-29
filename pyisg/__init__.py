@@ -12,7 +12,7 @@ try:
 except ImportError as e:
     raise NotImplementedError("pyisg does not support current platform") from e
 
-__version__: Final = "0.1.2"
+__version__: Final = "0.1.3"
 
 __all__ = [
     "types",
