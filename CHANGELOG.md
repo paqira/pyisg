@@ -1,5 +1,9 @@
 # Change Log
 
+## vX.X.X - XXXX-XX-XX
+
+- Enable LTO
+
 ## v0.1.3 - 2024-07-29
 
 - Fix leaking error on serializing `lat_max`, `lon_min` and `lon_max`
