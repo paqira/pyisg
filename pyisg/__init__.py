@@ -86,7 +86,7 @@ def dump(obj: Any, fp: TextIO) -> int:
         fp: output file-like obj
 
     Returns:
-        return value of fp.write
+        return value of `fp.write`
 
     Raises:
         SerializeError: serialization failed
