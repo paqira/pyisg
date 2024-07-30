@@ -52,6 +52,9 @@ class DmsCoordType(TypedDict):
     second: int
 
 
+CoordType: TypeAlias = DmsCoordType | float
+
+
 class HeaderType(TypedDict, total=False):
     """Type of Header dict."""
 
@@ -70,18 +73,18 @@ class HeaderType(TypedDict, total=False):
     coord_units: Required[CoordUnitsType]
     map_projection: str | None
     EPSG_code: str | None
-    lat_min: float | DmsCoordType | None
-    lat_max: float | DmsCoordType | None
-    north_min: float | DmsCoordType | None
-    north_max: float | DmsCoordType | None
-    lon_min: float | DmsCoordType | None
-    lon_max: float | DmsCoordType | None
-    east_min: float | DmsCoordType | None
-    east_max: float | DmsCoordType | None
-    delta_lat: float | DmsCoordType | None
-    delta_lon: float | DmsCoordType | None
-    delta_north: float | DmsCoordType | None
-    delta_east: float | DmsCoordType | None
+    lat_min: CoordType | None
+    lat_max: CoordType | None
+    north_min: CoordType | None
+    north_max: CoordType | None
+    lon_min: CoordType | None
+    lon_max: CoordType | None
+    east_min: CoordType | None
+    east_max: CoordType | None
+    delta_lat: CoordType | None
+    delta_lon: CoordType | None
+    delta_north: CoordType | None
+    delta_east: CoordType | None
     nrows: Required[int]
     ncols: Required[int]
     nodata: float | None
@@ -89,7 +92,7 @@ class HeaderType(TypedDict, total=False):
     ISG_format: Required[str]
 
 
-SparseData: TypeAlias = list[tuple[float | DmsCoordType, float | DmsCoordType, float]]
+SparseData: TypeAlias = list[tuple[CoordType, CoordType, float]]
 GridData: TypeAlias = list[list[float | None]]
 
 
