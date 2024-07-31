@@ -25,7 +25,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: 3.x
-      - uses: dtolnay/rust-toolchain@nightly
+      - uses: dtolnay/rust-toolchain@1.63
         with:
           components: clippy, rustfmt
       - run: pip install -U pip ruff maturin
