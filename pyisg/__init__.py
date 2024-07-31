@@ -30,10 +30,10 @@ __all__ = [
 
 
 def loads(s: str) -> ISGFormatType:
-    """Deserialize ISG 2.0 format :obj:`str` to :obj:`dict`.
+    """Deserialize ISG 2.0 format :obj:`str` obj to :obj:`dict` obj.
 
     Args:
-        s: ISG 2.0 format :obj:`str`
+        s: ISG 2.0 format :obj:`str` obj
 
     Returns:
         dict of ISG data
@@ -48,7 +48,7 @@ def loads(s: str) -> ISGFormatType:
 
 
 def load(fp: TextIO) -> ISGFormatType:
-    """Deserialize ISG 2.0 file-like obj to :obj:`dict`.
+    """Deserialize ISG 2.0 file-like obj to :obj:`dict` obj.
 
     Args:
         fp: file-like obj of ISG 2.0 format data
@@ -63,10 +63,10 @@ def load(fp: TextIO) -> ISGFormatType:
 
 
 def dumps(obj: Any) -> str:
-    """Serialize :class:`ISGFormatType`-like obj (typically :obj:`dict`) into :obj:`str`.
+    """Serialize :class:`ISGFormatType`-like obj into :obj:`str` obj.
 
     Args:
-        obj: dict of ISG data
+        obj: :class:`ISGFormatType`-like obj (:obj:`dict`-like obj)
 
     Raises:
         SerializeError: serialization failed
@@ -79,14 +79,14 @@ def dumps(obj: Any) -> str:
 
 
 def dump(obj: Any, fp: TextIO) -> int:
-    """Serialize :class:`ISGFormatType` like obj (typically :obj:`dict`) into file-like obj.
+    """Serialize :class:`ISGFormatType` like obj  into file-like obj.
 
     Args:
-        obj: dict of ISG data
+        obj: :class:`ISGFormatType`-like obj (:obj:`dict`-like obj)
         fp: output file-like obj
 
     Returns:
-        return value of `fp.write`
+        The number of characters written
 
     Raises:
         SerializeError: serialization failed
