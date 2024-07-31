@@ -3,6 +3,7 @@
 ## vX.X.X - XXXX-XX-XX
 
 - Enable LTO
+- Fix error message of `comment` type error on `dump(s)`
 
 ## v0.1.3 - 2024-07-29
 

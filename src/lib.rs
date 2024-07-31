@@ -68,7 +68,7 @@ fn dumps(obj: Bound<'_, PyAny>) -> PyResult<String> {
     let comment = obj
         .get_item("comment")
         .map_or(Ok("".to_string()), |o| o.extract())
-        .map_err(|_| type_error!("comment", "str | None"))?;
+        .map_err(|_| type_error!("comment", "str"))?;
 
     let header = obj
         .get_item("header")
