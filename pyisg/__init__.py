@@ -66,7 +66,7 @@ def dumps(obj: Any) -> str:
     """Serialize :class:`ISGFormatType`-like obj into :obj:`str` obj.
 
     Args:
-        obj: :class:`ISGFormatType`-like obj (:obj:`dict`-like obj)
+        obj: :class:`ISGFormatType`-like obj (:obj:`Mapping`-like obj)
 
     Raises:
         SerializeError: serialization failed
@@ -82,7 +82,7 @@ def dump(obj: Any, fp: TextIO) -> int:
     """Serialize :class:`ISGFormatType` like obj  into file-like obj.
 
     Args:
-        obj: :class:`ISGFormatType`-like obj (:obj:`dict`-like obj)
+        obj: :class:`ISGFormatType`-like obj (:obj:`Mapping`-like obj)
         fp: output file-like obj
 
     Returns:
