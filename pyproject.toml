@@ -1,5 +1,5 @@
 [build-system]
-requires = ["maturin>=1.7,<2.0"]
+requires = ["hatchling", "maturin>=1.7,<2.0"]
 build-backend = "maturin"
 
 [project]
@@ -43,6 +43,27 @@ Source = "https://github.com/paqira/pyisg"
 [tool.maturin]
 features = ["pyo3/extension-module"]
 
+# types
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+    "mypy>=1.0.0",
+]
+
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:pyisg}"
+
+# docs
+
+[tool.hatch.envs.docs]
+dependencies = [
+    "sphinx",
+    "myst_nb",
+    "sphinx_book_theme",
+]
+
+[tool.hatch.envs.docs.scripts]
+build = "sphinx-build -b html ./doc/source ./doc/build/html"
 
 # ruff
 
