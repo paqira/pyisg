@@ -369,7 +369,7 @@ impl<'a> FromPyObject<'a> for Wrapper<CreationDate> {
         let month = ob.get_item("month")?.extract()?;
         let day = ob.get_item("day")?.extract()?;
 
-        Ok(Self(CreationDate { year, month, day }))
+        Ok(Self(CreationDate::new(year, month, day)))
     }
 }
 
