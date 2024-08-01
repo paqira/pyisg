@@ -9,17 +9,14 @@ impl<'a> FromPyObject<'a> for Wrapper<Header> {
     fn extract_bound(ob: &Bound<'a, PyAny>) -> PyResult<Self> {
         let model_name = ob
             .get_item("model_name")
-            .ok()
             .map_or(Ok(None), |obj| obj.extract())
             .map_err(|_| type_error!("model_name", "str | None"))?;
         let model_year = ob
             .get_item("model_year")
-            .ok()
             .map_or(Ok(None), |obj| obj.extract())
             .map_err(|_| type_error!("model_year", "str | `None`"))?;
         let model_type = ob
             .get_item("model_type")
-            .ok()
             .map_or(Ok(None), |obj| obj.extract::<Option<Wrapper<ModelType>>>())
             .map_err(|_| {
                 type_error!(
@@ -30,28 +27,25 @@ impl<'a> FromPyObject<'a> for Wrapper<Header> {
             .map(Into::into);
         let data_type = ob
             .get_item("data_type")
-            .ok()
             .map_or(Ok(None), |obj| obj.extract::<Option<Wrapper<DataType>>>())
             .map_err(|_| type_error!("data_type", "'geoid' | 'quasi-geoid' | None"))?
             .map(Into::into);
         let data_units = ob
             .get_item("data_units")
-            .ok()
             .map_or(Ok(None), |obj| obj.extract::<Option<Wrapper<DataUnits>>>())
             .map_err(|_| type_error!("data_units", "'meters' | 'feet' | None"))?
             .map(Into::into);
         let data_format = ob
             .get_item("data_format")
-            .ok()
-            .ok_or(missing_key!("data_format"))?
+            .map_err(|_| missing_key!("data_format"))?
             .extract::<Wrapper<DataFormat>>()
             .map_err(|_| type_error!("data_format", "'grid' | 'sparse'"))?
             .into();
         let data_ordering = ob
             .get_item("data_ordering")
-            .ok()
-            .map(|obj| obj.extract::<Wrapper<DataOrdering>>())
-            .transpose()
+            .map_or(Ok(None), |obj| {
+                obj.extract::<Option<Wrapper<DataOrdering>>>()
+            })
             .map_err(|_| {
                 type_error!(
                     "data_ordering",
@@ -61,22 +55,18 @@ impl<'a> FromPyObject<'a> for Wrapper<Header> {
             .map(Into::into);
         let ref_ellipsoid = ob
             .get_item("ref_ellipsoid")
-            .ok()
             .map_or(Ok(None), |obj| obj.extract())
             .map_err(|_| type_error!("ref_ellipsoid", "str | None"))?;
         let ref_frame = ob
             .get_item("ref_frame")
-            .ok()
             .map_or(Ok(None), |obj| obj.extract())
             .map_err(|_| type_error!("ref_frame", "str | None"))?;
         let height_datum = ob
             .get_item("height_datum")
-            .ok()
             .map_or(Ok(None), |obj| obj.extract())
             .map_err(|_| type_error!("height_datum", "str | None"))?;
         let tide_system = ob
             .get_item("tide_system")
-            .ok()
             .map_or(Ok(None), |obj| obj.extract::<Option<Wrapper<TideSystem>>>())
             .map_err(|_| {
                 type_error!(
@@ -87,27 +77,23 @@ impl<'a> FromPyObject<'a> for Wrapper<Header> {
             .map(Into::into);
         let coord_type = ob
             .get_item("coord_type")
-            .ok()
-            .ok_or(missing_key!("coord_type"))?
+            .map_err(|_| missing_key!("coord_type"))?
             .extract::<Wrapper<CoordType>>()
             .map_err(|_| type_error!("coord_type", "'geodetic' | 'projected'"))?
             .into();
         let coord_units = ob
             .get_item("coord_units")
-            .ok()
-            .ok_or(missing_key!("coord_units"))?
+            .map_err(|_| missing_key!("coord_units"))?
             .extract::<Wrapper<CoordUnits>>()
             .map_err(|_| type_error!("coord_units", "'dms' | 'deg' | 'meters' | 'feet'"))?
             .into();
         let map_projection = ob
             .get_item("map_projection")
-            .ok()
             .map_or(Ok(None), |obj| obj.extract())
             .map_err(|_| type_error!("map_projection", "str | None"))?;
         #[allow(non_snake_case)]
         let EPSG_code = ob
             .get_item("EPSG_code")
-            .ok()
             .map_or(Ok(None), |obj| obj.extract())
             .map_err(|_| type_error!("EPSG_code", "str | None"))?;
         let nrows = ob
@@ -122,12 +108,10 @@ impl<'a> FromPyObject<'a> for Wrapper<Header> {
             .map_err(|_| type_error!("ncols", "int (usize)"))?;
         let nodata = ob
             .get_item("nodata")
-            .ok()
             .map_or(Ok(None), |obj| obj.extract())
             .map_err(|_| SerError::new_err("unexpected type on `nodata`, expected float | None"))?;
         let creation_date = ob
             .get_item("creation_date")
-            .ok()
             .map_or(Ok(None), |obj| {
                 obj.extract::<Option<Wrapper<CreationDate>>>()
             })
@@ -141,8 +125,7 @@ impl<'a> FromPyObject<'a> for Wrapper<Header> {
         #[allow(non_snake_case)]
         let ISG_format = ob
             .get_item("ISG_format")
-            .ok()
-            .ok_or(missing_key!("ISG_format"))?
+            .map_err(|_| missing_key!("ISG_format"))?
             .extract()
             .map_err(|_| type_error!("ISG_format", "str | None"))?;
 
