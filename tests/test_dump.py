@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import unittest
 
 import pyisg
@@ -195,7 +197,7 @@ class TestDeError(unittest.TestCase):
         self.assertEqual(cm.exception.args, ("missing key: 'header'",))
 
 
-class MissingKey(unittest.TestCase):
+class TestMissingKey(unittest.TestCase):
     def test_data_format(self):
         obj = {
             "comment": "",

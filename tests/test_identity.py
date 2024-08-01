@@ -1,7 +1,7 @@
-import unittest
+from __future__ import annotations
 
+import unittest
 from pathlib import Path
-from pprint import pprint
 
 import pyisg
 
