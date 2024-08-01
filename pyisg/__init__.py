@@ -10,7 +10,7 @@ from .types import ISGFormatType
 try:
     from . import pyisg as rsimpl  # type: ignore
 except ImportError as e:
-    raise NotImplementedError("pyisg does not support current platform") from e
+    raise NotImplementedError("`pyisg` does not support current python/platform") from e
 
 __version__: Final = "0.1.3"
 
