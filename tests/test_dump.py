@@ -506,5 +506,46 @@ end_of_head ==================================================
         self.assertEqual(expected, actual)
 
 
+class TestNoneValue(unittest.TestCase):
+    def test(self):
+        obj = {
+            "comment": "",
+            "header": {
+                "model_name": None,
+                "model_year": None,
+                "model_type": None,
+                "data_type": None,
+                "data_units": None,
+                "data_format": "grid",
+                "data_ordering": None,
+                "ref_ellipsoid": None,
+                "ref_frame": None,
+                "height_datum": None,
+                "tide_system": None,
+                "coord_type": "geodetic",
+                "coord_units": "dms",
+                "map_projection": None,
+                "EPSG_code": None,
+                "lat_min": {"degree": 39, "minutes": 50, "second": 0},
+                "lat_max": {"degree": 41, "minutes": 10, "second": 0},
+                "lon_min": {"degree": 119, "minutes": 50, "second": 0},
+                "lon_max": {"degree": 121, "minutes": 50, "second": 0},
+                "delta_lat": {"degree": 0, "minutes": 20, "second": 0},
+                "delta_lon": {"degree": 0, "minutes": 20, "second": 0},
+                "nrows": 2,
+                "ncols": 6,
+                "nodata": None,
+                "creation_date": None,
+                "ISG_format": "2.0",
+            },
+            "data": [
+                [30.1234, 31.2222, 32.3456, 33.4444, 34.5678, 36.6666],
+                [41.1111, 42.2345, 43.3333, 44.4567, 45.5555, 46.6789],
+            ],
+        }
+
+        pyisg.dumps(obj)
+
+
 if __name__ == "__main__":
     unittest.main()
