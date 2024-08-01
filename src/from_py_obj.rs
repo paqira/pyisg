@@ -329,9 +329,7 @@ impl<'a> FromPyObject<'a> for Wrapper<Data> {
         } else {
             Err(type_error!(
                 "data",
-                concat!(
-                    "list[list[float | None]] | list[tuple[float | { degree: int (i16), minutes: int (u8), second: int (u8) }, float | { degree: int (i16), minutes: int (u8), second: int (u8) }, float]]"
-                )
+                "list[list[float | None]] | list[tuple[float | { degree: int (i16), minutes: int (u8), second: int (u8) }, float | { degree: int (i16), minutes: int (u8), second: int (u8) }, float]]"
             ))
         }
     }

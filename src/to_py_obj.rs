@@ -6,7 +6,7 @@ use crate::*;
 
 impl ToPyObject for Wrapper<Header> {
     #[inline]
-    fn to_object(&self, py: Python<'_>) -> PyObject {
+    fn to_object(&self, py: Python) -> PyObject {
         let dict = PyDict::new_bound(py);
 
         macro_rules! set_item {
@@ -136,7 +136,7 @@ impl ToPyObject for Wrapper<Header> {
 
 impl ToPyObject for Wrapper<Data> {
     #[inline]
-    fn to_object(&self, py: Python<'_>) -> PyObject {
+    fn to_object(&self, py: Python) -> PyObject {
         match &self.0 {
             Data::Grid(data) => PyList::new_bound(py, data).into_py(py),
             Data::Sparse(data) => PyList::new_bound(
@@ -151,7 +151,7 @@ impl ToPyObject for Wrapper<Data> {
 
 impl ToPyObject for Wrapper<CreationDate> {
     #[inline]
-    fn to_object(&self, py: Python<'_>) -> PyObject {
+    fn to_object(&self, py: Python) -> PyObject {
         let dict = PyDict::new_bound(py);
 
         dict.set_item("year", self.0.year)
@@ -166,7 +166,7 @@ impl ToPyObject for Wrapper<CreationDate> {
 }
 
 impl ToPyObject for Wrapper<Coord> {
-    fn to_object(&self, py: Python<'_>) -> PyObject {
+    fn to_object(&self, py: Python) -> PyObject {
         match self.0 {
             Coord::DMS {
                 degree,

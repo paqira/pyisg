@@ -40,7 +40,7 @@ pub(crate) use missing_key;
 pub(crate) use type_error;
 
 #[pyfunction]
-fn loads<'a>(py: Python<'a>, s: &'a str) -> PyResult<Bound<'a, PyDict>> {
+fn loads<'a>(py: Python<'a>, s: &str) -> PyResult<Bound<'a, PyDict>> {
     let isg = libisg::from_str(s).map_err(|e| DeError::new_err(e.to_string()))?;
 
     let dict = PyDict::new_bound(py);
@@ -53,7 +53,7 @@ fn loads<'a>(py: Python<'a>, s: &'a str) -> PyResult<Bound<'a, PyDict>> {
 }
 
 #[pyfunction]
-fn dumps(obj: Bound<'_, PyAny>) -> PyResult<String> {
+fn dumps(obj: Bound<PyAny>) -> PyResult<String> {
     let comment = obj
         .get_item("comment")
         .map_or(Ok("".to_string()), |o| o.extract())
@@ -82,7 +82,7 @@ fn dumps(obj: Bound<'_, PyAny>) -> PyResult<String> {
 }
 
 #[pymodule]
-fn pyisg(py: Python, m: &Bound<'_, PyModule>) -> PyResult<()> {
+fn pyisg(py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(loads, m)?)?;
     m.add_function(wrap_pyfunction!(dumps, m)?)?;
 
