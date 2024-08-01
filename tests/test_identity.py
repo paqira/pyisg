@@ -6,7 +6,7 @@ from pathlib import Path
 import pyisg
 
 
-class Identity(unittest.TestCase):
+class TestIdentity(unittest.TestCase):
     maxDiff = None
 
     def test_example_1(self):
