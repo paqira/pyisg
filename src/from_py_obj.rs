@@ -6,6 +6,7 @@ use crate::*;
 // Notes, it reduces code base if trait impl specialization is introduced (RFC 1210)
 
 impl<'a> FromPyObject<'a> for Wrapper<Header> {
+    #[inline]
     fn extract_bound(ob: &Bound<'a, PyAny>) -> PyResult<Self> {
         let model_name = ob
             .get_item("model_name")
@@ -315,6 +316,7 @@ impl<'a> FromPyObject<'a> for Wrapper<Header> {
 }
 
 impl<'a> FromPyObject<'a> for Wrapper<Data> {
+    #[inline]
     fn extract_bound(ob: &Bound<'a, PyAny>) -> PyResult<Self> {
         if let Ok(data) = ob.extract() {
             Ok(Wrapper::<Data>(Data::Grid(data)))
@@ -338,6 +340,7 @@ impl<'a> FromPyObject<'a> for Wrapper<Data> {
 macro_rules! impl_from_py_object {
     ($type:tt) => {
         impl<'a> FromPyObject<'a> for Wrapper<$type> {
+            #[inline]
             fn extract_bound(ob: &Bound<'a, PyAny>) -> PyResult<Self> {
                 let r = ob
                     .extract::<String>()?
@@ -360,6 +363,7 @@ impl_from_py_object!(CoordType);
 impl_from_py_object!(CoordUnits);
 
 impl<'a> FromPyObject<'a> for Wrapper<CreationDate> {
+    #[inline]
     fn extract_bound(ob: &Bound<'a, PyAny>) -> PyResult<Self> {
         let year = ob.get_item("year")?.extract()?;
         let month = ob.get_item("month")?.extract()?;

@@ -5,6 +5,7 @@ use crate::*;
 macro_rules! impl_from {
     ($type:tt) => {
         impl From<Wrapper<$type>> for $type {
+            #[inline]
             fn from(value: Wrapper<$type>) -> $type {
                 value.0
             }

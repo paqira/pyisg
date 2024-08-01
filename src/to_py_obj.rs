@@ -5,6 +5,7 @@ use pyo3::types::{PyDict, PyList};
 use crate::*;
 
 impl ToPyObject for Wrapper<Header> {
+    #[inline]
     fn to_object(&self, py: Python<'_>) -> PyObject {
         let dict = PyDict::new_bound(py);
 
@@ -134,6 +135,7 @@ impl ToPyObject for Wrapper<Header> {
 }
 
 impl ToPyObject for Wrapper<Data> {
+    #[inline]
     fn to_object(&self, py: Python<'_>) -> PyObject {
         match &self.0 {
             Data::Grid(data) => PyList::new_bound(py, data).into_py(py),
@@ -148,6 +150,7 @@ impl ToPyObject for Wrapper<Data> {
 }
 
 impl ToPyObject for Wrapper<CreationDate> {
+    #[inline]
     fn to_object(&self, py: Python<'_>) -> PyObject {
         let dict = PyDict::new_bound(py);
 
