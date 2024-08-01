@@ -3,7 +3,9 @@ use pyo3::prelude::*;
 
 use crate::*;
 
-impl<'a> FromPyObject<'a> for HeaderWrapper {
+// Notes, it reduces code base if trait impl specialization is introduced (RFC 1210)
+
+impl<'a> FromPyObject<'a> for Wrapper<Header> {
     fn extract_bound(ob: &Bound<'a, PyAny>) -> PyResult<Self> {
         let model_name = ob
             .get_item("model_name")
@@ -18,7 +20,7 @@ impl<'a> FromPyObject<'a> for HeaderWrapper {
         let model_type = ob
             .get_item("model_type")
             .ok()
-            .map_or(Ok(None), |obj| obj.extract::<Option<ModelTypeWrapper>>())
+            .map_or(Ok(None), |obj| obj.extract::<Option<Wrapper<ModelType>>>())
             .map_err(|_| {
                 type_error!(
                     "model_type",
@@ -29,26 +31,26 @@ impl<'a> FromPyObject<'a> for HeaderWrapper {
         let data_type = ob
             .get_item("data_type")
             .ok()
-            .map_or(Ok(None), |obj| obj.extract::<Option<DataTypeWrapper>>())
+            .map_or(Ok(None), |obj| obj.extract::<Option<Wrapper<DataType>>>())
             .map_err(|_| type_error!("data_type", "'geoid' | 'quasi-geoid' | None"))?
             .map(Into::into);
         let data_units = ob
             .get_item("data_units")
             .ok()
-            .map_or(Ok(None), |obj| obj.extract::<Option<DataUnitsWrapper>>())
+            .map_or(Ok(None), |obj| obj.extract::<Option<Wrapper<DataUnits>>>())
             .map_err(|_| type_error!("data_units", "'meters' | 'feet' | None"))?
             .map(Into::into);
         let data_format = ob
             .get_item("data_format")
             .ok()
             .ok_or(missing_key!("data_format"))?
-            .extract::<DataFormatWrapper>()
+            .extract::<Wrapper<DataFormat>>()
             .map_err(|_| type_error!("data_format", "'grid' | 'sparse'"))?
             .into();
         let data_ordering = ob
             .get_item("data_ordering")
             .ok()
-            .map(|obj| obj.extract::<DataOrderingWrapper>())
+            .map(|obj| obj.extract::<Wrapper<DataOrdering>>())
             .transpose()
             .map_err(|_| {
                 type_error!(
@@ -75,7 +77,7 @@ impl<'a> FromPyObject<'a> for HeaderWrapper {
         let tide_system = ob
             .get_item("tide_system")
             .ok()
-            .map_or(Ok(None), |obj| obj.extract::<Option<TideSystemWrapper>>())
+            .map_or(Ok(None), |obj| obj.extract::<Option<Wrapper<TideSystem>>>())
             .map_err(|_| {
                 type_error!(
                     "tide_system",
@@ -87,14 +89,14 @@ impl<'a> FromPyObject<'a> for HeaderWrapper {
             .get_item("coord_type")
             .ok()
             .ok_or(missing_key!("coord_type"))?
-            .extract::<CoordTypeWrapper>()
+            .extract::<Wrapper<CoordType>>()
             .map_err(|_| type_error!("coord_type", "'geodetic' | 'projected'"))?
             .into();
         let coord_units = ob
             .get_item("coord_units")
             .ok()
             .ok_or(missing_key!("coord_units"))?
-            .extract::<CoordUnitsWrapper>()
+            .extract::<Wrapper<CoordUnits>>()
             .map_err(|_| type_error!("coord_units", "'dms' | 'deg' | 'meters' | 'feet'"))?
             .into();
         let map_projection = ob
@@ -126,7 +128,9 @@ impl<'a> FromPyObject<'a> for HeaderWrapper {
         let creation_date = ob
             .get_item("creation_date")
             .ok()
-            .map_or(Ok(None), |obj| obj.extract::<Option<CreationDateWrapper>>())
+            .map_or(Ok(None), |obj| {
+                obj.extract::<Option<Wrapper<CreationDate>>>()
+            })
             .map_err(|_| {
                 type_error!(
                     "creation_date",
@@ -147,7 +151,7 @@ impl<'a> FromPyObject<'a> for HeaderWrapper {
                 let lat_min = ob
                     .get_item("lat_min")
                     .map_err(|_| missing_key!("lat_min"))?
-                    .extract::<CoordWrapper>()
+                    .extract::<Wrapper<Coord>>()
                     .map_err(|_| {
                         type_error!(
                             "lat_min",
@@ -158,7 +162,7 @@ impl<'a> FromPyObject<'a> for HeaderWrapper {
                 let lat_max = ob
                     .get_item("lat_max")
                     .map_err(|_| missing_key!("lat_max"))?
-                    .extract::<CoordWrapper>()
+                    .extract::<Wrapper<Coord>>()
                     .map_err(|_| {
                         type_error!(
                             "lat_max",
@@ -169,7 +173,7 @@ impl<'a> FromPyObject<'a> for HeaderWrapper {
                 let lon_min = ob
                     .get_item("lon_min")
                     .map_err(|_| missing_key!("lon_min"))?
-                    .extract::<CoordWrapper>()
+                    .extract::<Wrapper<Coord>>()
                     .map_err(|_| {
                         type_error!(
                             "lon_min",
@@ -180,7 +184,7 @@ impl<'a> FromPyObject<'a> for HeaderWrapper {
                 let lon_max = ob
                     .get_item("lon_max")
                     .map_err(|_| missing_key!("lon_max"))?
-                    .extract::<CoordWrapper>()
+                    .extract::<Wrapper<Coord>>()
                     .map_err(|_| {
                         type_error!(
                             "lon_max",
@@ -194,13 +198,13 @@ impl<'a> FromPyObject<'a> for HeaderWrapper {
                         let delta_lat = ob
                             .get_item("delta_lat")
                             .map_err(|_| missing_key!("delta_lat"))?
-                            .extract::<CoordWrapper>()
+                            .extract::<Wrapper<Coord>>()
                             .map_err(|_| type_error!("delta_lat", "float | { degree: int (i16), minutes: int (u8), second: int (u8) }"))?
                             .into();
                         let delta_lon = ob
                             .get_item("delta_lon")
                             .map_err(|_| missing_key!("delta_lon"))?
-                            .extract::<CoordWrapper>()
+                            .extract::<Wrapper<Coord>>()
                             .map_err(|_| type_error!("delta_lon", "float | { degree: int (i16), minutes: int (u8), second: int (u8) }"))?
                             .into();
 
@@ -225,7 +229,7 @@ impl<'a> FromPyObject<'a> for HeaderWrapper {
                 let north_min = ob
                     .get_item("north_min")
                     .map_err(|_| missing_key!("north_min"))?
-                    .extract::<CoordWrapper>()
+                    .extract::<Wrapper<Coord>>()
                     .map_err(|_| {
                         type_error!(
                             "north_min",
@@ -236,7 +240,7 @@ impl<'a> FromPyObject<'a> for HeaderWrapper {
                 let north_max = ob
                     .get_item("north_max")
                     .map_err(|_| missing_key!("north_max"))?
-                    .extract::<CoordWrapper>()
+                    .extract::<Wrapper<Coord>>()
                     .map_err(|_| {
                         type_error!(
                             "north_max",
@@ -247,7 +251,7 @@ impl<'a> FromPyObject<'a> for HeaderWrapper {
                 let east_min = ob
                     .get_item("east_min")
                     .map_err(|_| missing_key!("east_min"))?
-                    .extract::<CoordWrapper>()
+                    .extract::<Wrapper<Coord>>()
                     .map_err(|_| {
                         type_error!(
                             "east_min",
@@ -258,7 +262,7 @@ impl<'a> FromPyObject<'a> for HeaderWrapper {
                 let east_max = ob
                     .get_item("east_max")
                     .map_err(|_| missing_key!("east_max"))?
-                    .extract::<CoordWrapper>()
+                    .extract::<Wrapper<Coord>>()
                     .map_err(|_| {
                         type_error!(
                             "east_max",
@@ -272,13 +276,13 @@ impl<'a> FromPyObject<'a> for HeaderWrapper {
                         let delta_north = ob
                             .get_item("delta_north")
                             .map_err(|_| missing_key!("delta_north"))?
-                            .extract::<CoordWrapper>()
+                            .extract::<Wrapper<Coord>>()
                             .map_err(|_| type_error!("delta_north", "float | { degree: int (i16), minutes: int (u8), second: int (u8) }"))?
                             .into();
                         let delta_east = ob
                             .get_item("delta_east")
                             .map_err(|_| missing_key!("delta_east"))?
-                            .extract::<CoordWrapper>()
+                            .extract::<Wrapper<Coord>>()
                             .map_err(|_| type_error!("delta_east", "float | { degree: int (i16), minutes: int (u8), second: int (u8) }"))?
                             .into();
 
@@ -327,12 +331,12 @@ impl<'a> FromPyObject<'a> for HeaderWrapper {
     }
 }
 
-impl<'a> FromPyObject<'a> for DataWrapper {
+impl<'a> FromPyObject<'a> for Wrapper<Data> {
     fn extract_bound(ob: &Bound<'a, PyAny>) -> PyResult<Self> {
         if let Ok(data) = ob.extract() {
-            Ok(DataWrapper(Data::Grid(data)))
-        } else if let Ok(data) = ob.extract::<Vec<(CoordWrapper, CoordWrapper, f64)>>() {
-            Ok(DataWrapper(Data::Sparse(
+            Ok(Wrapper::<Data>(Data::Grid(data)))
+        } else if let Ok(data) = ob.extract::<Vec<(Wrapper<Coord>, Wrapper<Coord>, f64)>>() {
+            Ok(Wrapper::<Data>(Data::Sparse(
                 data.into_iter()
                     .map(|(a, b, c)| (a.into(), b.into(), c))
                     .collect(),
@@ -350,7 +354,7 @@ impl<'a> FromPyObject<'a> for DataWrapper {
 
 macro_rules! impl_from_py_object {
     ($type:tt) => {
-        impl<'a> FromPyObject<'a> for $type {
+        impl<'a> FromPyObject<'a> for Wrapper<$type> {
             fn extract_bound(ob: &Bound<'a, PyAny>) -> PyResult<Self> {
                 let r = ob
                     .extract::<String>()?
@@ -363,16 +367,16 @@ macro_rules! impl_from_py_object {
     };
 }
 
-impl_from_py_object!(ModelTypeWrapper);
-impl_from_py_object!(DataTypeWrapper);
-impl_from_py_object!(DataUnitsWrapper);
-impl_from_py_object!(DataFormatWrapper);
-impl_from_py_object!(DataOrderingWrapper);
-impl_from_py_object!(TideSystemWrapper);
-impl_from_py_object!(CoordTypeWrapper);
-impl_from_py_object!(CoordUnitsWrapper);
+impl_from_py_object!(ModelType);
+impl_from_py_object!(DataType);
+impl_from_py_object!(DataUnits);
+impl_from_py_object!(DataFormat);
+impl_from_py_object!(DataOrdering);
+impl_from_py_object!(TideSystem);
+impl_from_py_object!(CoordType);
+impl_from_py_object!(CoordUnits);
 
-impl<'a> FromPyObject<'a> for CreationDateWrapper {
+impl<'a> FromPyObject<'a> for Wrapper<CreationDate> {
     fn extract_bound(ob: &Bound<'a, PyAny>) -> PyResult<Self> {
         let year = ob.get_item("year")?.extract()?;
         let month = ob.get_item("month")?.extract()?;
@@ -382,7 +386,7 @@ impl<'a> FromPyObject<'a> for CreationDateWrapper {
     }
 }
 
-impl<'a> FromPyObject<'a> for CoordWrapper {
+impl<'a> FromPyObject<'a> for Wrapper<Coord> {
     fn extract_bound(ob: &Bound<'a, PyAny>) -> PyResult<Self> {
         if let Ok(v) = ob.extract() {
             Ok(Self(Coord::Dec(v)))

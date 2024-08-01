@@ -3,24 +3,24 @@ use libisg::*;
 use crate::*;
 
 macro_rules! impl_from {
-    ($src:tt => $dis:tt) => {
-        impl From<$src> for $dis {
-            fn from(value: $src) -> Self {
+    ($type:tt) => {
+        impl From<Wrapper<$type>> for $type {
+            fn from(value: Wrapper<$type>) -> $type {
                 value.0
             }
         }
     };
 }
 
-impl_from!(HeaderWrapper => Header);
-impl_from!(DataWrapper => Data);
-impl_from!(ModelTypeWrapper => ModelType);
-impl_from!(DataTypeWrapper => DataType);
-impl_from!(DataUnitsWrapper => DataUnits);
-impl_from!(DataFormatWrapper => DataFormat);
-impl_from!(DataOrderingWrapper => DataOrdering);
-impl_from!(TideSystemWrapper => TideSystem);
-impl_from!(CoordTypeWrapper => CoordType);
-impl_from!(CoordUnitsWrapper => CoordUnits);
-impl_from!(CreationDateWrapper => CreationDate);
-impl_from!(CoordWrapper => Coord);
+impl_from!(Header);
+impl_from!(Data);
+impl_from!(ModelType);
+impl_from!(DataType);
+impl_from!(DataUnits);
+impl_from!(DataFormat);
+impl_from!(DataOrdering);
+impl_from!(TideSystem);
+impl_from!(CoordType);
+impl_from!(CoordUnits);
+impl_from!(CreationDate);
+impl_from!(Coord);

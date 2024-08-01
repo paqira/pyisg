@@ -1,6 +1,6 @@
 use libisg::{
-    Coord, CoordType, CoordUnits, CreationDate, Data, DataFormat, DataOrdering, DataType,
-    DataUnits, Header, ModelType, TideSystem, ISG,
+    CoordType, CoordUnits, CreationDate, Data, DataFormat, DataOrdering, DataType, DataUnits,
+    Header, ModelType, TideSystem, ISG,
 };
 use pyo3::create_exception;
 use pyo3::exceptions::PyValueError;
@@ -19,18 +19,7 @@ mod to_py_obj;
 create_exception!(pyisg, SerError, PyValueError);
 create_exception!(pyisg, DeError, PyValueError);
 
-pub(crate) struct HeaderWrapper(Header);
-pub(crate) struct DataWrapper(Data);
-pub(crate) struct ModelTypeWrapper(ModelType);
-pub(crate) struct DataTypeWrapper(DataType);
-pub(crate) struct DataUnitsWrapper(DataUnits);
-pub(crate) struct DataFormatWrapper(DataFormat);
-pub(crate) struct DataOrderingWrapper(DataOrdering);
-pub(crate) struct TideSystemWrapper(TideSystem);
-pub(crate) struct CoordTypeWrapper(CoordType);
-pub(crate) struct CoordUnitsWrapper(CoordUnits);
-pub(crate) struct CreationDateWrapper(CreationDate);
-pub(crate) struct CoordWrapper(Coord);
+pub(crate) struct Wrapper<T>(T);
 
 macro_rules! type_error {
     ($name:expr, $expected:expr) => {
@@ -57,8 +46,8 @@ fn loads<'a>(py: Python<'a>, s: &'a str) -> PyResult<Bound<'a, PyDict>> {
     let dict = PyDict::new_bound(py);
 
     dict.set_item("comment", isg.comment)?;
-    dict.set_item("header", HeaderWrapper(isg.header))?;
-    dict.set_item("data", DataWrapper(isg.data))?;
+    dict.set_item("header", Wrapper::<Header>(isg.header))?;
+    dict.set_item("data", Wrapper::<Data>(isg.data))?;
 
     Ok(dict)
 }
@@ -73,13 +62,13 @@ fn dumps(obj: Bound<'_, PyAny>) -> PyResult<String> {
     let header = obj
         .get_item("header")
         .map_err(|_| missing_key!("header"))?
-        .extract::<HeaderWrapper>()?
+        .extract::<Wrapper<Header>>()?
         .into();
 
     let data = obj
         .get_item("data")
         .map_err(|_| missing_key!("data"))?
-        .extract::<DataWrapper>()?
+        .extract::<Wrapper<Data>>()?
         .into();
 
     let isg = ISG {

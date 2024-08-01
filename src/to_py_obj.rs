@@ -1,10 +1,10 @@
-use libisg::{Coord, Data, DataBounds};
+use libisg::{Coord, Data, DataBounds, Header};
 use pyo3::prelude::*;
 use pyo3::types::{PyDict, PyList};
 
-use crate::{CoordWrapper, CreationDateWrapper, DataWrapper, HeaderWrapper};
+use crate::*;
 
-impl ToPyObject for HeaderWrapper {
+impl ToPyObject for Wrapper<Header> {
     fn to_object(&self, py: Python<'_>) -> PyObject {
         let dict = PyDict::new_bound(py);
 
@@ -34,14 +34,14 @@ impl ToPyObject for HeaderWrapper {
 
         macro_rules! set_item_data_bounds {
             ($field:ident) => {
-                dict.set_item(stringify!($field), CoordWrapper($field))
+                dict.set_item(stringify!($field), Wrapper::<Coord>($field))
                     .expect(concat!("fail to set `", stringify!($field), "` to dict"));
             };
         }
 
         macro_rules! set_item_data_bounds_none {
             ($field:ident) => {
-                dict.set_item(stringify!($field), None::<CoordWrapper>)
+                dict.set_item(stringify!($field), None::<Wrapper<Coord>>)
                     .expect(concat!("fail to set `", stringify!($field), "` to dict"));
             };
         }
@@ -124,7 +124,7 @@ impl ToPyObject for HeaderWrapper {
         set_item!(nodata);
         dict.set_item(
             "creation_date",
-            self.0.creation_date.map(CreationDateWrapper),
+            self.0.creation_date.map(Wrapper::<CreationDate>),
         )
         .expect("fail to set `creation_date` to dict");
         set_item!(ISG_format);
@@ -133,21 +133,21 @@ impl ToPyObject for HeaderWrapper {
     }
 }
 
-impl ToPyObject for DataWrapper {
+impl ToPyObject for Wrapper<Data> {
     fn to_object(&self, py: Python<'_>) -> PyObject {
         match &self.0 {
             Data::Grid(data) => PyList::new_bound(py, data).into_py(py),
             Data::Sparse(data) => PyList::new_bound(
                 py,
                 data.iter()
-                    .map(|row| (CoordWrapper(row.0), CoordWrapper(row.1), row.2)),
+                    .map(|row| (Wrapper::<Coord>(row.0), Wrapper::<Coord>(row.1), row.2)),
             )
             .into_py(py),
         }
     }
 }
 
-impl ToPyObject for CreationDateWrapper {
+impl ToPyObject for Wrapper<CreationDate> {
     fn to_object(&self, py: Python<'_>) -> PyObject {
         let dict = PyDict::new_bound(py);
 
@@ -162,7 +162,7 @@ impl ToPyObject for CreationDateWrapper {
     }
 }
 
-impl ToPyObject for CoordWrapper {
+impl ToPyObject for Wrapper<Coord> {
     fn to_object(&self, py: Python<'_>) -> PyObject {
         match self.0 {
             Coord::DMS {
