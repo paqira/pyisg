@@ -1,6 +1,6 @@
 # Change Log
 
-## vX.X.X - XXXX-XX-XX
+## v0.1.4 - 2024-08-03
 
 - Enable LTO
 - Fix error message of `comment` type error on `dump(s)`
