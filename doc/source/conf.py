@@ -71,3 +71,23 @@ autodoc_member_order = "bysource"
 # autodoc_typehints = 'both'
 
 nb_execution_mode = "off"
+
+html_title = "pyisg"
+
+html_theme_options = {
+    "use_repository_button": True,
+    "repository_url": "https://github.com/paqira/pyisg",
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/paqira/pyisg",
+            "icon": "fa-brands fa-github",
+        },
+        {
+            "name": "PyPI",
+            "url": "https://pypi.org/project/pyisg/",
+            "icon": "https://img.shields.io/pypi/v/pyisg?logo=PyPI&label=PyPI",
+            "type": "url",
+        },
+    ],
+}
