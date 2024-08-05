@@ -315,22 +315,31 @@ impl<'a> FromPyObject<'a> for Wrapper<Header> {
     }
 }
 
-impl<'a> FromPyObject<'a> for Wrapper<Data> {
+impl Wrapper<Data> {
     #[inline]
-    fn extract_bound(ob: &Bound<'a, PyAny>) -> PyResult<Self> {
-        if let Ok(data) = ob.extract() {
-            Ok(Wrapper::<Data>(Data::Grid(data)))
-        } else if let Ok(data) = ob.extract::<Vec<(Wrapper<Coord>, Wrapper<Coord>, f64)>>() {
-            Ok(Wrapper::<Data>(Data::Sparse(
-                data.into_iter()
-                    .map(|(a, b, c)| (a.into(), b.into(), c))
-                    .collect(),
-            )))
-        } else {
-            Err(type_error!(
-                "data",
-                "list[list[float | None]] | list[tuple[float | { degree: int (i16), minutes: int (u8), second: int (u8) }, float | { degree: int (i16), minutes: int (u8), second: int (u8) }, float]]"
-            ))
+    pub(crate) fn extract_bound(ob: &Bound<PyAny>, header: &Header) -> PyResult<Self> {
+        match header.data_format {
+            DataFormat::Grid => {
+                if let Ok(data) = ob.extract() {
+                    Ok(Wrapper(Data::Grid(data)))
+                } else {
+                    Err(type_error!("data", "list[list[float | None]]"))
+                }
+            }
+            DataFormat::Sparse => {
+                if let Ok(data) = ob.extract::<Vec<(Wrapper<Coord>, Wrapper<Coord>, f64)>>() {
+                    let r = data
+                        .into_iter()
+                        .map(|(a, b, c)| (a.into(), b.into(), c))
+                        .collect();
+                    Ok(Wrapper(Data::Sparse(r)))
+                } else {
+                    Err(type_error!(
+                        "data",
+                        "list[tuple[float | { degree: int (i16), minutes: int (u8), second: int (u8) }, float | { degree: int (i16), minutes: int (u8), second: int (u8) }, float]]"
+                    ))
+                }
+            }
         }
     }
 }

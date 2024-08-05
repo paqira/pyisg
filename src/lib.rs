@@ -65,11 +65,8 @@ fn dumps(obj: Bound<PyAny>) -> PyResult<String> {
         .extract::<Wrapper<Header>>()?
         .into();
 
-    let data = obj
-        .get_item("data")
-        .map_err(|_| missing_key!("data"))?
-        .extract::<Wrapper<Data>>()?
-        .into();
+    let temp = obj.get_item("data").map_err(|_| missing_key!("data"))?;
+    let data = Wrapper::<Data>::extract_bound(&temp, &header)?.into();
 
     let isg = ISG {
         comment,

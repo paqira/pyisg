@@ -1,5 +1,9 @@
 # Change Log
 
+## v0.1.5 - 2024-08-06
+
+- Fix `dump(s)` 3 columns data
+
 ## v0.1.4 - 2024-08-03
 
 - Enable LTO
