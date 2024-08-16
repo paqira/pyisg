@@ -1,6 +1,6 @@
 [package]
 name = "pyisg"
-version = "0.1.5"
+version = "0.1.6"
 edition = "2021"
 rust-version = "1.63" # by PyO3
 authors = ["Kentaro Tatsumi <paqira.2019@gmail.com>"]
@@ -12,8 +12,8 @@ name = "pyisg"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = { version = "0.22" }
-libisg = { version = ">= 0.2.1" }
+pyo3 = { version = "0.22.2" }
+libisg = { version = "0.2.5" }
 
 [profile]
 release = { lto = true }

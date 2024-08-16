@@ -1,5 +1,9 @@
 # Change Log
 
+## v0.1.6 - 2024-08-17
+
+- Bump libisg to v0.2.5
+
 ## v0.1.5 - 2024-08-06
 
 - Fix `dump(s)` 3 columns data
