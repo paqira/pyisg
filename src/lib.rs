@@ -11,16 +11,6 @@ mod from_py_obj;
 mod into;
 mod to_py_obj;
 
-// SerError and DeError are for propagates error message to Python side,
-// Python code captures all them.
-// This start makes code mess (see from_py_obj.rs),
-// but it is conservative on error.
-
-create_exception!(pyisg, SerError, PyValueError);
-create_exception!(pyisg, DeError, PyValueError);
-
-pub(crate) struct Wrapper<T>(T);
-
 macro_rules! type_error {
     ($name:expr, $expected:expr) => {
         SerError::new_err(concat!(
@@ -36,8 +26,19 @@ macro_rules! missing_key {
         SerError::new_err(concat!("missing key: '", $key, "'"))
     };
 }
-pub(crate) use missing_key;
-pub(crate) use type_error;
+
+use missing_key;
+use type_error;
+
+struct Wrapper<T>(T);
+
+// SerError and DeError are for propagates error message to Python side,
+// Python code captures all them.
+// This start makes code mess (see from_py_obj.rs),
+// but it is conservative on error.
+
+create_exception!(pyisg, SerError, PyValueError);
+create_exception!(pyisg, DeError, PyValueError);
 
 #[pyfunction]
 fn loads<'a>(py: Python<'a>, s: &str) -> PyResult<Bound<'a, PyDict>> {
