@@ -1,9 +1,5 @@
 # Change Log
 
-## vx.x.x
-
-- Support Python 3.13
-
 ## v0.1.6 - 2024-08-17
 
 - Bump libisg to v0.2.5
