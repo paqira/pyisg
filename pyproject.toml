@@ -4,7 +4,6 @@ build-backend = "maturin"
 
 [project]
 name = "pyisg"
-version = "0.1.6"
 authors = [
     { name = "Kentaro Tatsumi", email = "paqira.2019@gmail.com" },
 ]
@@ -34,11 +33,15 @@ classifiers = [
 dependencies = [
     "typing-extensions >= 4.0.0"
 ]
+dynamic = ["version"]
 
 [project.urls]
 Documentation = "https://pyisg.readthedocs.io"
 Issues = "https://github.com/paqira/pyisg/issues"
 Source = "https://github.com/paqira/pyisg"
+
+[tool.hatch.version]
+path = "pyisg/__init__.py"
 
 [tool.maturin]
 features = ["pyo3/extension-module"]
