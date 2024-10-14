@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Final, TextIO
+from typing import Any, TextIO
 
 from . import types
 from .types import ISGFormatType
@@ -12,7 +12,7 @@ try:
 except ImportError as e:
     raise NotImplementedError("`pyisg` does not support current python/platform") from e
 
-__version__: Final = "0.1.6"
+__version__ = "0.1.6"
 
 __all__ = [
     "types",
