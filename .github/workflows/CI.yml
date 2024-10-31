@@ -39,10 +39,8 @@ jobs:
           cargo clippy
       - name: Test
         run: |
-          python3 -m venv venv
-          . venv/bin/activate
-          maturin develop --release
-          python3 -m unittest discover -s tests
+          hatch env run maturin develop
+          hatch env run -- python3 -m unittest discover -s tests
 
   linux:
     runs-on: ${{ matrix.platform.runner }}
