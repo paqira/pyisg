@@ -28,7 +28,8 @@ jobs:
       - uses: dtolnay/rust-toolchain@1.63
         with:
           components: clippy, rustfmt
-      - run: pip install -U pip ruff maturin
+      - name: Install Hatch
+        run: pipx install hatch ruff maturin
       - name: Check Python
         run: |
           ruff format --check
