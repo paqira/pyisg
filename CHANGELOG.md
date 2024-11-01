@@ -1,5 +1,10 @@
 # Change Log
 
+## v0.1.7 - 2024-11-01
+
+- Bump minimal python support to 3.9
+- Fix some typing error
+
 ## v0.1.6 - 2024-08-17
 
 - Bump libisg to v0.2.5
