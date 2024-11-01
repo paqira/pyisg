@@ -2,9 +2,13 @@
 
 from __future__ import annotations
 
-from typing import Literal, TypeAlias, TypedDict
+from typing import TYPE_CHECKING, Literal, TypedDict, Union
 
-from typing_extensions import Required  # python >= 3.11
+if TYPE_CHECKING:
+    from typing_extensions import (
+        Required,  # typing @ >= 3.11
+        TypeAlias,  # typing @ >= 3.10
+    )
 
 __all__ = [
     "ISGFormatType",
@@ -52,7 +56,7 @@ class DmsCoordType(TypedDict):
     second: int
 
 
-CoordType: TypeAlias = DmsCoordType | float
+CoordType: TypeAlias = Union[DmsCoordType, float]
 
 
 class HeaderType(TypedDict, total=False):
@@ -93,7 +97,7 @@ class HeaderType(TypedDict, total=False):
 
 
 SparseData: TypeAlias = list[tuple[CoordType, CoordType, float]]
-GridData: TypeAlias = list[list[float | None]]
+GridData: TypeAlias = list[list[Union[float, None]]]
 
 
 class ISGFormatType(TypedDict):
