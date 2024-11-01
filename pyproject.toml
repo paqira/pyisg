@@ -39,11 +39,11 @@ Documentation = "https://pyisg.readthedocs.io"
 Issues = "https://github.com/paqira/pyisg/issues"
 Source = "https://github.com/paqira/pyisg"
 
-[tool.hatch.version]
-path = "pyisg/__init__.py"
-
 [tool.maturin]
 features = ["pyo3/extension-module"]
+
+[tool.hatch.version]
+path = "pyisg/__init__.py"
 
 # types
 
