@@ -67,6 +67,15 @@ dependencies = [
 [tool.hatch.envs.docs.scripts]
 build = "sphinx-build -b html ./doc/source ./doc/build/html"
 
+# test
+# Workaround: hatch test does not support pre-test command,
+# see .github/workflows/CI.yml
+[[tool.hatch.envs.test.matrix]]
+python = ["3.9", "3.10", "3.11", "3.12", "3.13"]
+
+# [[tool.hatch.envs.hatch-test.matrix]]
+# python = ["3.9", "3.10", "3.11", "3.12", "3.13"]
+
 # ruff
 
 [tool.ruff]
