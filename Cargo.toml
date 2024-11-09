@@ -8,7 +8,7 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/paqira/pyisg"
 
 [lib]
-name = "pyisg"
+name = "rust_impl"
 crate-type = ["cdylib"]
 
 [dependencies]

@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling", "maturin>=1.7,<2.0"]
+requires = ["maturin>=1.7,<2.0"]
 build-backend = "maturin"
 
 [project]
@@ -41,6 +41,7 @@ Source = "https://github.com/paqira/pyisg"
 
 [tool.maturin]
 features = ["pyo3/extension-module"]
+module-name = "pyisg.rust_impl"
 
 [tool.hatch.version]
 path = "pyisg/__init__.py"

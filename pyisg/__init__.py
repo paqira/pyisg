@@ -8,7 +8,7 @@ from . import types
 from .types import ISGFormatType
 
 try:
-    from . import pyisg as rsimpl  # type: ignore
+    from . import rust_impl  # type: ignore
 except ImportError as e:
     raise NotImplementedError("`pyisg` does not support current python/platform") from e
 
@@ -42,8 +42,8 @@ def loads(s: str) -> ISGFormatType:
         DeserializeError: deserialization failed
     """
     try:
-        return rsimpl.loads(s)
-    except rsimpl.DeError as e:
+        return rust_impl.loads(s)
+    except rust_impl.DeError as e:
         raise DeserializeError(*e.args) from None
 
 
@@ -73,8 +73,8 @@ def dumps(obj: Any) -> str:
         pyo3_runtime.PanicException: data has :obj:`None` even when nodata is :obj:`None`
     """
     try:
-        return rsimpl.dumps(obj)
-    except rsimpl.SerError as e:
+        return rust_impl.dumps(obj)
+    except rust_impl.SerError as e:
         raise SerializeError(*e.args) from None
 
 
