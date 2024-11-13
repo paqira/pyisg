@@ -80,7 +80,7 @@ fn dumps(obj: Bound<PyAny>) -> PyResult<String> {
 }
 
 #[pymodule]
-#[pyo3(name="rust_impl")]
+#[pyo3(name = "rust_impl")]
 fn pyisg(py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(loads, m)?)?;
     m.add_function(wrap_pyfunction!(dumps, m)?)?;
