@@ -1,13 +1,18 @@
 use libisg::{Coord, Data, DataBounds, Header};
 use pyo3::prelude::*;
 use pyo3::types::{PyDict, PyList};
+use std::convert::Infallible;
 
 use crate::*;
 
-impl ToPyObject for Wrapper<Header> {
+impl<'py> IntoPyObject<'py> for Wrapper<Header> {
+    type Target = PyDict;
+    type Output = Bound<'py, Self::Target>;
+    type Error = Infallible;
+
     #[inline]
-    fn to_object(&self, py: Python) -> PyObject {
-        let dict = PyDict::new_bound(py);
+    fn into_pyobject(self, py: Python<'py>) -> Result<Self::Output, Self::Error> {
+        let dict = PyDict::new(py);
 
         macro_rules! set_item {
             ($field:ident) => {
@@ -130,29 +135,40 @@ impl ToPyObject for Wrapper<Header> {
         .expect("fail to set `creation_date` to dict");
         set_item!(ISG_format);
 
-        dict.into_py(py)
+        dict.into_pyobject(py)
     }
 }
 
-impl ToPyObject for Wrapper<Data> {
+impl<'py> IntoPyObject<'py> for Wrapper<Data> {
+    type Target = PyList;
+    type Output = Bound<'py, Self::Target>;
+    type Error = PyErr;
+
     #[inline]
-    fn to_object(&self, py: Python) -> PyObject {
+    fn into_pyobject(self, py: Python<'py>) -> Result<Self::Output, Self::Error> {
         match &self.0 {
-            Data::Grid(data) => PyList::new_bound(py, data).into_py(py),
-            Data::Sparse(data) => PyList::new_bound(
+            Data::Grid(data) => PyList::new(py, data)?
+                .into_pyobject(py)
+                .map_err(PyErr::from),
+            Data::Sparse(data) => PyList::new(
                 py,
                 data.iter()
                     .map(|row| (Wrapper::<Coord>(row.0), Wrapper::<Coord>(row.1), row.2)),
-            )
-            .into_py(py),
+            )?
+            .into_pyobject(py)
+            .map_err(PyErr::from),
         }
     }
 }
 
-impl ToPyObject for Wrapper<CreationDate> {
+impl<'py> IntoPyObject<'py> for Wrapper<CreationDate> {
+    type Target = PyDict;
+    type Output = Bound<'py, Self::Target>;
+    type Error = Infallible;
+
     #[inline]
-    fn to_object(&self, py: Python) -> PyObject {
-        let dict = PyDict::new_bound(py);
+    fn into_pyobject(self, py: Python<'py>) -> Result<Self::Output, Self::Error> {
+        let dict = PyDict::new(py);
 
         dict.set_item("year", self.0.year)
             .expect("fail to set `year` to dict");
@@ -161,19 +177,23 @@ impl ToPyObject for Wrapper<CreationDate> {
         dict.set_item("day", self.0.day)
             .expect("fail to set `day` to dict");
 
-        dict.into_py(py)
+        dict.into_pyobject(py)
     }
 }
 
-impl ToPyObject for Wrapper<Coord> {
-    fn to_object(&self, py: Python) -> PyObject {
+impl<'py> IntoPyObject<'py> for Wrapper<Coord> {
+    type Target = PyAny;
+    type Output = Bound<'py, Self::Target>;
+    type Error = Infallible;
+
+    fn into_pyobject(self, py: Python<'py>) -> Result<Self::Output, Self::Error> {
         match self.0 {
             Coord::DMS {
                 degree,
                 minutes,
                 second,
             } => {
-                let dict = PyDict::new_bound(py);
+                let dict = PyDict::new(py);
 
                 dict.set_item("degree", degree)
                     .expect("fail to set `degree` to dict");
@@ -182,9 +202,10 @@ impl ToPyObject for Wrapper<Coord> {
                 dict.set_item("second", second)
                     .expect("fail to set `second` to dict");
 
-                dict.into_py(py)
+                dict.into_pyobject(py).map(|v| v.into_any())
             }
-            Coord::Dec(v) => v.into_py(py),
+
+            Coord::Dec(v) => v.into_pyobject(py).map(|v| v.into_any()),
         }
     }
 }

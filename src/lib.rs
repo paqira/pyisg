@@ -44,7 +44,7 @@ create_exception!(pyisg, DeError, PyValueError);
 fn loads<'a>(py: Python<'a>, s: &str) -> PyResult<Bound<'a, PyDict>> {
     let isg = libisg::from_str(s).map_err(|e| DeError::new_err(e.to_string()))?;
 
-    let dict = PyDict::new_bound(py);
+    let dict = PyDict::new(py);
 
     dict.set_item("comment", isg.comment)?;
     dict.set_item("header", Wrapper::<Header>(isg.header))?;
@@ -85,8 +85,8 @@ fn pyisg(py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(loads, m)?)?;
     m.add_function(wrap_pyfunction!(dumps, m)?)?;
 
-    m.add("SerError", py.get_type_bound::<SerError>())?;
-    m.add("DeError", py.get_type_bound::<DeError>())?;
+    m.add("SerError", py.get_type::<SerError>())?;
+    m.add("DeError", py.get_type::<DeError>())?;
 
     Ok(())
 }
