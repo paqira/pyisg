@@ -3,6 +3,7 @@
 ## vx.x.x - 20xx-Xx-xx
 
 - Change Exception name (`{Serialize,Deserialize}Error` to `{ISGEncode,ISGDecode}Error`)
+- Support Python 3.13
 
 ## v0.1.7 - 2024-11-01
 
