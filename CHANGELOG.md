@@ -1,5 +1,9 @@
 # Change Log
 
+## vx.x.x - 20xx-Xx-xx
+
+- Change Exception name (`{Serialize,Deserialize}Error` to `{ISGEncode,ISGDecode}Error`)
+
 ## v0.1.7 - 2024-11-01
 
 - Bump minimal python support to 3.9

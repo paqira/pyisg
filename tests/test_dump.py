@@ -83,7 +83,7 @@ class TestTypeError(unittest.TestCase):
             ],
         }
 
-        with self.assertRaises(pyisg.SerializeError) as cm:
+        with self.assertRaises(pyisg.ISGEncodeError) as cm:
             pyisg.dumps(obj)
 
         self.assertEqual(cm.exception.args, ("unexpected type on `comment`, expected str",))
@@ -127,7 +127,7 @@ class TestTypeError(unittest.TestCase):
             ],
         }
 
-        with self.assertRaises(pyisg.SerializeError) as cm:
+        with self.assertRaises(pyisg.ISGEncodeError) as cm:
             pyisg.dumps(obj)
 
         self.assertEqual(cm.exception.args, ("unexpected type on `comment`, expected str",))
@@ -170,7 +170,7 @@ class TestTypeError(unittest.TestCase):
             ],
         }
 
-        with self.assertRaises(pyisg.SerializeError) as cm:
+        with self.assertRaises(pyisg.ISGEncodeError) as cm:
             pyisg.dumps(obj)
         self.assertEqual(
             cm.exception.args,
@@ -192,7 +192,7 @@ class TestDeError(unittest.TestCase):
             ],
         }
 
-        with self.assertRaises(pyisg.SerializeError) as cm:
+        with self.assertRaises(pyisg.ISGEncodeError) as cm:
             pyisg.dumps(obj)
         self.assertEqual(cm.exception.args, ("missing key: 'header'",))
 
@@ -236,7 +236,7 @@ class TestMissingKey(unittest.TestCase):
             ],
         }
 
-        with self.assertRaises(pyisg.SerializeError) as cm:
+        with self.assertRaises(pyisg.ISGEncodeError) as cm:
             pyisg.dumps(obj)
         self.assertEqual(cm.exception.args, ("missing key: 'data_format'",))
 
@@ -278,7 +278,7 @@ class TestMissingKey(unittest.TestCase):
             ],
         }
 
-        with self.assertRaises(pyisg.SerializeError) as cm:
+        with self.assertRaises(pyisg.ISGEncodeError) as cm:
             pyisg.dumps(obj)
         self.assertEqual(cm.exception.args, ("missing key: 'coord_type'",))
 
@@ -320,7 +320,7 @@ class TestMissingKey(unittest.TestCase):
             ],
         }
 
-        with self.assertRaises(pyisg.SerializeError) as cm:
+        with self.assertRaises(pyisg.ISGEncodeError) as cm:
             pyisg.dumps(obj)
         self.assertEqual(cm.exception.args, ("missing key: 'coord_units'",))
 
@@ -362,7 +362,7 @@ class TestMissingKey(unittest.TestCase):
             ],
         }
 
-        with self.assertRaises(pyisg.SerializeError) as cm:
+        with self.assertRaises(pyisg.ISGEncodeError) as cm:
             pyisg.dumps(obj)
         self.assertEqual(cm.exception.args, ("missing key: 'nrows'",))
 
@@ -404,7 +404,7 @@ class TestMissingKey(unittest.TestCase):
             ],
         }
 
-        with self.assertRaises(pyisg.SerializeError) as cm:
+        with self.assertRaises(pyisg.ISGEncodeError) as cm:
             pyisg.dumps(obj)
         self.assertEqual(cm.exception.args, ("missing key: 'ncols'",))
 
@@ -446,7 +446,7 @@ class TestMissingKey(unittest.TestCase):
             ],
         }
 
-        with self.assertRaises(pyisg.SerializeError) as cm:
+        with self.assertRaises(pyisg.ISGEncodeError) as cm:
             pyisg.dumps(obj)
         self.assertEqual(cm.exception.args, ("missing key: 'ISG_format'",))
 

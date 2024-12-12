@@ -24,8 +24,8 @@ __all__ = [
     "dumps",
     "dump",
     #
-    "SerializeError",
-    "DeserializeError",
+    "ISGEncodeError",
+    "ISGDecodeError",
 ]
 
 
@@ -44,7 +44,7 @@ def loads(s: str) -> ISGFormatType:
     try:
         return rust_impl.loads(s)
     except rust_impl.DeError as e:
-        raise DeserializeError(*e.args) from None
+        raise ISGDecodeError(*e.args) from None
 
 
 def load(fp: TextIO) -> ISGFormatType:
@@ -75,7 +75,7 @@ def dumps(obj: Any) -> str:
     try:
         return rust_impl.dumps(obj)
     except rust_impl.SerError as e:
-        raise SerializeError(*e.args) from None
+        raise ISGEncodeError(*e.args) from None
 
 
 def dump(obj: Any, fp: TextIO) -> int:
@@ -95,13 +95,13 @@ def dump(obj: Any, fp: TextIO) -> int:
     return fp.write(dumps(obj))
 
 
-class SerializeError(ValueError):
+class ISGEncodeError(ValueError):
     """Error of :func:`dump` and :func:`dumps`."""
 
     pass
 
 
-class DeserializeError(ValueError):
+class ISGDecodeError(ValueError):
     """Error of :func:`load` and :func:`loads`."""
 
     pass
